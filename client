@@ -17,5 +17,15 @@ config = ConfigParser()
 config.read(args.config)
 
 client = BackendApplicationClient(client_id = CLIENT_ID)
-oauth = OAuth2Session(client = client)
-token = oauth.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'])
+
+with OAuth2Session(client = client, scope = 'account_view') as session:
+    token = session.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'], scope = 'auto')
+
+    response = session.get(config['server']['api'] + '/v2.1/accounts')
+
+    if response.ok:
+        from pprint import pprint
+        pprint(response.json())
+    else:
+        print(response.status_code, response.reason)
+        print(token)
