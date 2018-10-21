@@ -18,10 +18,13 @@ config.read(args.config)
 
 client = BackendApplicationClient(client_id = CLIENT_ID)
 
-with OAuth2Session(client = client, scope = 'account_view') as session:
+with OAuth2Session(client = client) as session:
     token = session.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'], scope = 'auto')
 
-    response = session.get(config['server']['api'] + '/v2.1/accounts')
+    host = config['server']['api']
+    endpoint = '/v2.1/accounts/' + config['client']['account-id'] + '/contacts'
+    params = {'$async': False}
+    response = session.get(host + endpoint, params = params)
 
     if response.ok:
         from pprint import pprint

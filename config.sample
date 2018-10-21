@@ -4,4 +4,7 @@ api = https://api.wildapricot.org
 version = v2.1
 
 [client]
+# The API key used for this application.
 secret = 
+# The organization account ID, which can be found via the `/accounts` endpoint.
+account-id = 
