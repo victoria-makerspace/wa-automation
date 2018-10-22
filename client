@@ -10,6 +10,7 @@ CLIENT_ID = 'APIKEY'
 # Parse command-line arguments.
 parser = ArgumentParser()
 parser.add_argument('-c', '--config', required = True, help = 'Path to configuration file.')
+parser.add_argument('-a', '--account', help = 'Wild Apricot account ID (overrides configuration file).')
 args = parser.parse_args()
 
 # Read configuration file.
@@ -21,14 +22,21 @@ client = BackendApplicationClient(client_id = CLIENT_ID)
 with OAuth2Session(client = client) as session:
     token = session.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'], scope = 'auto')
 
+    if args.account:
+        account = args.account
+    elif 'account-id' in config['client']:
+        account = config['client']['account-id']
+    else:
+        account = token['Permissions'][0]['AccountId']
+
     host = config['server']['api']
-    endpoint = '/v2.1/accounts/' + config['client']['account-id'] + '/contacts'
+    endpoint = '/v2.1/accounts/' + str(account) + '/contacts'
     params = {'$async': False}
     response = session.get(host + endpoint, params = params)
 
-    if response.ok:
-        from pprint import pprint
-        pprint(response.json())
-    else:
-        print(response.status_code, response.reason)
-        print(token)
+    if not response.ok:
+        print(str(response.status_code) + ':', response.reason)
+        exit()
+
+    from pprint import pprint
+    pprint(response.json())
