@@ -17,26 +17,49 @@ args = parser.parse_args()
 config = ConfigParser()
 config.read(args.config)
 
+# Creates client variable as an object of type BackendApplicationsClient from 
+# the oauth2 library.
 client = BackendApplicationClient(client_id = CLIENT_ID)
 
-with OAuth2Session(client = client) as session:
+# Session exists for lenght of block of code.
+with OAuth2Session(client = client) as session: 
     token = session.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'], scope = 'auto')
 
-    if args.account:
-        account = args.account
-    elif 'account-id' in config['client']:
+    # Did you pass -a something?
+    if args.account: 
+        account = args.account 
+    elif 'account-id' in config['client']: 
+        # Take account-id from config file. 
         account = config['client']['account-id']
     else:
+        # Get account-id from session token provided within WA's authentication 
+        # handshake.
         account = token['Permissions'][0]['AccountId']
 
     host = config['server']['api']
-    endpoint = '/v2.1/accounts/' + str(account) + '/contacts'
+    endpoint = '/v2.1/accounts/' + str(account) + '/membershiplevels' 
     params = {'$async': False}
+    # OAutho2Session class already had params variable so Victor reused the 
+    # name for clarity when he passed it his own variable
     response = session.get(host + endpoint, params = params)
 
     if not response.ok:
         print(str(response.status_code) + ':', response.reason)
         exit()
+    
+    level_id = 0
+
+    for level in response.json():
+        if level['Name'] == config['members']['regular']:
+            level_id = level['Id']
+            break
+    if level_id is 0:
+        print ('Error: Level "' + config['members']['regular'] + '" was not found')
+        exit()
+    
+    endpoint = '/v2.1/accounts/' + str(account) + '/contacts' 
+    params = {'$async': False, '$filter' : 'Member eq True'}
+    response = session.get(host + endpoint, params = params)
 
     from pprint import pprint
     pprint(response.json())
