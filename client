@@ -2,41 +2,65 @@
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
-from oauthlib.oauth2 import BackendApplicationClient
-from requests_oauthlib import OAuth2Session
 
-CLIENT_ID = 'APIKEY'
+class Session:
+    from oauthlib.oauth2 import BackendApplicationClient
+    from requests_oauthlib import OAuth2Session
+    # Wild Apricot uses "APIKEY" as the client ID, and the client secret is
+    # generated in Settings -> Security -> Authorized applications.
+    CLIENT_ID = 'APIKEY'
 
-# Parse command-line arguments.
+    def __init__(self, auth_endpoint, secret, api_host, account = None):
+        client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
+        self.oauth2_session = self.OAuth2Session(client = client)
+        self.token = self.oauth2_session.fetch_token(auth_endpoint, client_id = self.CLIENT_ID, client_secret = secret, scope = 'auto')
+        self.account = account or token['Permissions'][0]['AccountId']
+        self.host = api_host
+
+    # get synchronously queries the Wild Apricot API
+    def get(self, endpoint, params = {}):
+        endpoint = '/v2.1/accounts/' + str(self.account) + '/' + endpoint
+        params['$async'] = False
+        response = self.oauth2_session.get(self.host + endpoint, params = params)
+
+        if not response.ok:
+            raise Exception(str(response.status_code) + ': ' + response.reason)
+
+        return response.json()
+
+# Parse command-line arguments
 parser = ArgumentParser()
-parser.add_argument('-c', '--config', required = True, help = 'Path to configuration file.')
-parser.add_argument('-a', '--account', help = 'Wild Apricot account ID (overrides configuration file).')
+parser.add_argument('-c', '--config', required = True, help = 'Path to configuration file')
+parser.add_argument('-a', '--account', help = 'Wild Apricot account ID')
 args = parser.parse_args()
 
-# Read configuration file.
+# Read configuration file
 config = ConfigParser()
 config.read(args.config)
+auth_endpoint = config['server']['auth']
+api_host = config['server']['api']
+secret = config['client']['secret']
+account = None
 
-client = BackendApplicationClient(client_id = CLIENT_ID)
+if args.account:
+    account = args.account
+elif 'account-id' in config['client']:
+    account = config['client']['account-id']
 
-with OAuth2Session(client = client) as session:
-    token = session.fetch_token(config['server']['auth'], client_id = CLIENT_ID, client_secret = config['client']['secret'], scope = 'auto')
+session = Session(auth_endpoint, secret, api_host, account)
+members = {}
 
-    if args.account:
-        account = args.account
-    elif 'account-id' in config['client']:
-        account = config['client']['account-id']
+for contact in session.get('contacts')['Contacts']:
+    if 'MembershipLevel' not in contact:
+        continue
+
+    level = contact['MembershipLevel']['Name']
+    email = contact['Email']
+
+    if level not in members:
+        members[level] = {email}
     else:
-        account = token['Permissions'][0]['AccountId']
+        members[level].add(email)
 
-    host = config['server']['api']
-    endpoint = '/v2.1/accounts/' + str(account) + '/contacts'
-    params = {'$async': False}
-    response = session.get(host + endpoint, params = params)
-
-    if not response.ok:
-        print(str(response.status_code) + ':', response.reason)
-        exit()
-
-    from pprint import pprint
-    pprint(response.json())
+from pprint import pprint
+pprint(members)
