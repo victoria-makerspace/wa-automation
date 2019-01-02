@@ -11,9 +11,6 @@ class Contacts:
         for contact in self.response:
             contact = Contact(contact, session)
 
-            if contact.archived:
-                continue
-
             if contact.level not in self.levels:
                 self.levels[contact.level] = {}
 
@@ -41,6 +38,9 @@ class Contact:
         self.session = session
         self.ID = response['Id']
 
+    def __str__(self):
+        return '%d: %s <%s>' % (self.ID, self.name, self.email)
+
     def __field(self, name):
         for field in self.response['FieldValues']:
             if field['FieldName'] == name:
@@ -55,6 +55,14 @@ class Contact:
             return field['Value']
 
         return None
+
+    def fields(self):
+        fields = {}
+
+        for field in self.response['FieldValues']:
+            fields[field['FieldName']] = field['Value']
+
+        return fields
 
     def put(self, data = {}, params = {}):
         data['Id'] = self.ID

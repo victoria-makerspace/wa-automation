@@ -18,7 +18,7 @@ class Session:
     def request(self, verb, endpoint, params = {}, data = {}):
         endpoint = '/v2.1/accounts/%d/%s' % (self.account, endpoint)
         params['$async'] = False
-        response = self.oauth2_session.request(verb, self.config.api_host + endpoint, params = params, data = data)
+        response = self.oauth2_session.request(verb, self.config.api_host + endpoint, params = params, json = data)
 
         if not response.ok:
             raise Exception('%d: %s' % (response.status_code, response.reason))
