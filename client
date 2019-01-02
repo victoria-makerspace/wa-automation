@@ -2,22 +2,11 @@
 
 from session import Session
 from config import Config
+from contacts import Contacts
 
 config = Config()
 session = Session(config)
-members = {}
-
-for contact in session.get('contacts')['Contacts']:
-    if 'MembershipLevel' not in contact:
-        continue
-
-    level = contact['MembershipLevel']['Name']
-    email = contact['Email']
-
-    if level not in members:
-        members[level] = {email}
-    else:
-        members[level].add(email)
+contacts = Contacts(session)
 
 from pprint import pprint
-pprint(members)
+pprint(contacts.levels)
