@@ -1,3 +1,5 @@
+from config import Config
+
 class Session:
     from oauthlib.oauth2 import BackendApplicationClient
     from requests_oauthlib import OAuth2Session
@@ -5,7 +7,7 @@ class Session:
     # generated in Settings -> Security -> Authorized applications.
     CLIENT_ID = 'APIKEY'
 
-    def __init__(self, config):
+    def __init__(self, config = Config()):
         self.config = config
         client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
         self.oauth2_session = self.OAuth2Session(client = client)

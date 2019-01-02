@@ -1,7 +1,9 @@
 from dateutil.parser import parse
 
+from session import Session
+
 class Contacts:
-    def __init__(self, session):
+    def __init__(self, session = Session()):
         self.session = session
         self.response = session.get('contacts')['Contacts']
         self.levels = {}
