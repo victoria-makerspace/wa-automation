@@ -1,3 +1,5 @@
+from dateutil.parser import parse
+
 class Contacts:
     def __init__(self, session):
         self.session = session
@@ -27,8 +29,7 @@ class Contact:
         self.response = response
         self.level = None
         self.ID = response['Id']
-        self.first_name = response['FirstName']
-        self.last_name = response['LastName']
+        self.name = response['FirstName'] + ' ' + response['LastName']
         self.fields = {}
 
         if 'MembershipLevel' in response:
@@ -38,3 +39,4 @@ class Contact:
             self.fields[field['FieldName']] = field['Value']
 
         self.archived = self.fields['Archived']
+        self.last_login = parse(self.fields['Last login date'])
