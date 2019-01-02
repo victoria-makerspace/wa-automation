@@ -12,15 +12,15 @@ class Session:
         client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
         self.oauth2_session = self.OAuth2Session(client = client)
         self.token = self.oauth2_session.fetch_token(config.auth_endpoint, client_id = self.CLIENT_ID, client_secret = config.secret, scope = 'auto')
-        self.account = config.account or token['Permissions'][0]['AccountId']
+        self.account = int(config.account or token['Permissions'][0]['AccountId'])
 
-    # get synchronously queries the Wild Apricot API
-    def get(self, endpoint, params = {}):
-        endpoint = '/v2.1/accounts/' + str(self.account) + '/' + endpoint
+    # request synchronously communicates with the Wild Apricot API
+    def request(self, verb, endpoint, params = {}, data = {}):
+        endpoint = '/v2.1/accounts/%d/%s' % (self.account, endpoint)
         params['$async'] = False
-        response = self.oauth2_session.get(self.config.api_host + endpoint, params = params)
+        response = self.oauth2_session.request(verb, self.config.api_host + endpoint, params = params, data = data)
 
         if not response.ok:
-            raise Exception(str(response.status_code) + ': ' + response.reason)
+            raise Exception('%d: %s' % (response.status_code, response.reason))
 
         return response.json()

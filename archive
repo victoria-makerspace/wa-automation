@@ -15,4 +15,13 @@ for contact_id in non_members:
     contact = non_members[contact_id]
 
     if contact.last_login < now - archive_threshold:
-        print(contact.name)
+        pass
+        # contact.archived = True
+
+borg = contacts.find('gfgjff@tyrivard.com')
+
+print(borg.name, borg.email, borg.archived)
+
+borg.archived = True
+
+print(borg.archived)
