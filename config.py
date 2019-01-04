@@ -1,23 +1,32 @@
-class Config:
-    from argparse import ArgumentParser
-    from configparser import ConfigParser
+from argparse import ArgumentParser
+from configparser import ConfigParser
+from datetime import timedelta
 
-    def __init__(self):
-        # Parse command-line arguments
-        parser = self.ArgumentParser()
-        parser.add_argument('-c', '--config', required = True, help = 'Path to configuration file')
-        parser.add_argument('-a', '--account', help = 'Wild Apricot account ID')
-        args = parser.parse_args()
+# Defaults
+AUTH_ENDPOINT = 'https://oauth.wildapricot.org/auth/token'
+API_HOST = 'https://api.wildapricot.org'
+ARCHIVE_THRESHOLD = 60
 
-        # Read configuration file
-        config = self.ConfigParser()
-        config.read(args.config)
-        self.auth_endpoint = config['server']['auth']
-        self.api_host = config['server']['api']
-        self.secret = config['client']['secret']
-        self.account = None
+# Parse command-line arguments
+parser = ArgumentParser()
+parser.add_argument('-c', '--config', required = True, help = 'Path to configuration file')
+parser.add_argument('-a', '--account', help = 'Wild Apricot account ID')
+args = parser.parse_args()
 
-        if args.account:
-            self.account = args.account
-        elif 'account-id' in config['client']:
-            self.account = config['client']['account-id']
+# Read configuration file
+config = ConfigParser()
+config.read(args.config)
+server = config['server'] if 'server' in config else {}
+options = config['options'] if 'options' in config else {}
+
+# Configuration variable declarations
+auth_endpoint = server['auth'] if 'auth' in server else AUTH_ENDPOINT
+api_host = server['api'] if 'api' in server else API_HOST
+secret = config['client']['secret']
+account = None
+archive_threshold = timedelta(options['archive-threshold'] if 'archive-threshold' in options else ARCHIVE_THRESHOLD)
+
+if args.account:
+    account = args.account
+elif 'account-id' in config['client']:
+    account = config['client']['account-id']

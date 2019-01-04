@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
+import config
 from contacts import Contacts
 
 contacts = Contacts()
-
 non_members = contacts.levels['New Applicant']
-# Non-members that have not logged in within the past 60 days are past the
-# threshold for archiving.
-archive_threshold = timedelta(60)
-now = datetime.now(timezone.utc)
+now = datetime.now()
+print(f'\n{now:%c}')
+now = now.astimezone(timezone.utc)
+
+archive_msg = f'Archiving non-members who have not logged in within {config.archive_threshold.days} days'
 
 for contact_id in non_members:
     contact = non_members[contact_id]
 
-    if contact.last_login < now - archive_threshold:
-        contact.archived = True
+    if not contact.archived and contact.last_login < now - config.archive_threshold:
+        if archive_msg:
+            print(archive_msg)
+            archive_msg = None
+
+        print(f'\t{contact}') # contact.archived = True
