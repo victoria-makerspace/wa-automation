@@ -22,6 +22,13 @@ class Contacts:
 
         return None
 
+    def getlevel(self, *levels):
+        contacts = {}
+
+        for contact in self.list.values():
+            if contact.level in levels:
+                yield contact
+
     @property
     def levels(self):
         levels = set()
