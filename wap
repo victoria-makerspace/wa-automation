@@ -5,6 +5,7 @@ from args import args
 import config
 from contacts import Contacts
 from datetime import datetime, timezone
+from describe import describe
 import sys
 from tzlocal import get_localzone
 
@@ -16,7 +17,7 @@ if 1 < len(args.operations):
 
 operations = {
         'archive': lambda x: archive(contacts, now),
-        'describe': lambda args: describe(args[0]),
+        'describe': lambda x: describe(contacts, x),
         }
 
 for op in args.operations:
