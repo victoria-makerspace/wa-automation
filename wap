@@ -25,4 +25,5 @@ for op in args.operations:
         print(f'Error: {op[0]} is not a valid operation', file = sys.stderr)
         continue
 
+    print()
     operations[op[0]](op[1:])
