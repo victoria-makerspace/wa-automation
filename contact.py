@@ -58,7 +58,11 @@ class Contact:
 
     def put(self, data = {}, params = {}):
         data['Id'] = self.ID
-        self.response = self.session.request('PUT', f'contacts/{self.ID}', params, data)
+        self.response = self.session.request(
+                'PUT',
+                f'contacts/{self.ID}',
+                params,
+                data)
 
     @property
     def archived(self):
