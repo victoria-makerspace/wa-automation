@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+from archive import archive
+from args import args
+import config
+from contacts import Contacts
+from datetime import datetime, timezone
+import sys
+from tzlocal import get_localzone
+
+now = datetime.now(timezone.utc)
+contacts = Contacts()
+
+if 1 < len(args.operations):
+    print(f'\n{now.astimezone(get_localzone()):%c}')
+
+operations = {
+        'archive': lambda x: archive(contacts, now),
+        'describe': lambda args: describe(args[0]),
+        }
+
+for op in args.operations:
+    if op[0] not in operations:
+        print(f'Error: {op[0]} is not a valid operation', file = sys.stderr)
+        continue
+
+    operations[op[0]](op[1:])

@@ -48,7 +48,7 @@ class Contact:
         return None
 
     def describe(self):
-        f = {'ID': self.ID}
+        f = { 'ID': self.ID }
         f['Name'] = self.name
         f['E-mail'] = self.email
         phone = self.field('Phone')
