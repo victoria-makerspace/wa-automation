@@ -31,6 +31,6 @@ if 'api' in server:
 if 'levels' in archive:
     config['archive-levels'] = [level.strip() for level in archive['levels'].split(',')]
 if 'threshold' in archive:
-    config['archive-threshold'] = timedelta(archive['threshold'])
+    config['archive-threshold'] = timedelta(int(archive['threshold']))
 if 'auth' in server:
     config['auth_endpoint'] = server['auth']

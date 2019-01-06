@@ -11,5 +11,5 @@ def archive(contacts, now):
                 print(archive_msg)
                 archive_msg = None
 
-            #contact.archived = True
+            contact.archived = True
             print(f'\t{contact}')
