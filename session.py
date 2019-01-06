@@ -3,8 +3,7 @@ import config
 class Session:
     from oauthlib.oauth2 import BackendApplicationClient
     from requests_oauthlib import OAuth2Session
-    # Wild Apricot uses "APIKEY" as the client ID, and the client secret is
-    # generated in Settings -> Security -> Authorized applications.
+    # Wild Apricot uses "APIKEY" as the client ID
     CLIENT_ID = 'APIKEY'
 
     def __init__(self):

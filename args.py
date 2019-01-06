@@ -3,6 +3,12 @@ from argparse import ArgumentParser
 parser = ArgumentParser(
         description = 'Client for interacting with the Wild Apricot admin API.')
 parser.add_argument(
+        '-k',
+        '--key',
+        help = "API key, generated in Settings -> Security -> Authorized applications",
+        metavar = "API key"
+        )
+parser.add_argument(
         '-a',
         '--account',
         help = 'Wild Apricot account ID',
