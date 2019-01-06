@@ -30,7 +30,7 @@ class Contact:
         f['E-mail'] = self.email
         phone = self.field('Phone')
         if phone: f['Phone'] = phone
-        f['Last login'] = self.last_login
+        f['Last login'] = self.last_login if self.last_login else 'Never'
         f['Last updated'] = self.last_updated
         member_since = self.field('Member since')
         if member_since: f['Member since'] = member_since
@@ -96,6 +96,9 @@ class Contact:
 
     @property
     def last_login(self):
+        if self.field('Last login date') is None:
+            return None
+
         return parse(self.field('Last login date'))
 
     @property

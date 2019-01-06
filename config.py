@@ -7,8 +7,9 @@ import sys
 config = {
         'account': None,
         'api_host': 'https://api.wildapricot.org',
-        'archive-levels': [],
-        'archive-threshold': timedelta(60),
+        'archive': {
+            'levels': [],
+            'threshold': timedelta(60)},
         'auth_endpoint': 'https://oauth.wildapricot.org/auth/token'}
 
 # Read configuration file
@@ -29,8 +30,8 @@ elif 'account-id' in client:
 if 'api' in server:
     config['api_host'] = server['api']
 if 'levels' in archive:
-    config['archive-levels'] = [level.strip() for level in archive['levels'].split(',')]
+    config['archive']['levels'] = [level.strip() for level in archive['levels'].split(',')]
 if 'threshold' in archive:
-    config['archive-threshold'] = timedelta(int(archive['threshold']))
+    config['archive']['threshold'] = timedelta(int(archive['threshold']))
 if 'auth' in server:
     config['auth_endpoint'] = server['auth']

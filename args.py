@@ -6,7 +6,7 @@ parser.add_argument(
         '-k',
         '--key',
         help = "Path to file containing the API key, generated in Settings -> Security -> Authorized applications",
-        metavar = "<api key>",
+        metavar = "<api-key>",
         type = FileType())
 parser.add_argument(
         '-a',

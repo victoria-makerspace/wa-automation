@@ -1,6 +1,6 @@
 [server]
-auth = https://oauth.wildapricot.org/auth/token
 api = https://api.wildapricot.org
+auth = https://oauth.wildapricot.org/auth/token
 version = v2.1
 
 [client]
