@@ -1,5 +1,6 @@
 import args
 import config
+from time import sleep, time
 
 class Session:
     from oauthlib.oauth2 import BackendApplicationClient
@@ -16,11 +17,17 @@ class Session:
                 client_secret = args.key,
                 scope = 'auto')
         self.account = int(config.account or token['Permissions'][0]['AccountId'])
+        self.last_request = 0
 
     # request synchronously communicates with the Wild Apricot API
     def request(self, verb, endpoint, params = {}, data = {}):
         endpoint = f'/v2.1/accounts/{self.account}/{endpoint}'
         params['$async'] = False
+
+        if time() < self.last_request + 1:
+            sleep(1)
+
+        self.last_request = time()
         response = self.oauth2_session.request(
                 verb,
                 config.api_host + endpoint,
