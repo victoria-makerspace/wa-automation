@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "72cf6c05a94c8db31f0ee73c1e2effe371bc2d1aec6243f35f75eeb74f4ea65a"
+            "sha256": "fc5f11f9dcc36a6a7b4d7fec93db039f315e90daf3417d64632dcf036af7a2b5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -45,14 +45,6 @@
             "index": "pypi",
             "version": "==2.1.0"
         },
-        "pydiscourse": {
-            "hashes": [
-                "sha256:4c00872d8c514f830160d4b6b706e01083beb0a1c9a28a3b8016eaa3a77ad188",
-                "sha256:a85945f9916a213c7b75fcfed8b8a599966545872544485d113eca1a0ef6c221"
-            ],
-            "index": "pypi",
-            "version": "==0.8.0"
-        },
         "python-dateutil": {
             "hashes": [
                 "sha256:063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93",
@@ -73,6 +65,7 @@
                 "sha256:502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e",
                 "sha256:7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"
             ],
+            "index": "pypi",
             "version": "==2.21.0"
         },
         "requests-oauthlib": {

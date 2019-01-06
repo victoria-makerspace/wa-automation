@@ -17,7 +17,7 @@ class Contacts:
 
     def find(self, email):
         for contact in self.list.values():
-            if contact.email == email:
+            if contact.email.lower() == email.lower():
                 return contact
 
         return None
