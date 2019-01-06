@@ -1,3 +1,4 @@
+import args
 import config
 
 class Session:
@@ -12,7 +13,7 @@ class Session:
         token = self.oauth2_session.fetch_token(
                 config.auth_endpoint,
                 client_id = self.CLIENT_ID,
-                client_secret = config.secret,
+                client_secret = args.key,
                 scope = 'auto')
         self.account = int(config.account or token['Permissions'][0]['AccountId'])
 

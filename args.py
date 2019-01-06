@@ -1,17 +1,17 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 
 parser = ArgumentParser(
         description = 'Client for interacting with the Wild Apricot admin API.')
 parser.add_argument(
         '-k',
         '--key',
-        help = "API key, generated in Settings -> Security -> Authorized applications",
-        metavar = "API key"
-        )
+        help = "Path to file containing the API key, generated in Settings -> Security -> Authorized applications",
+        metavar = "<api key>",
+        type = FileType())
 parser.add_argument(
         '-a',
         '--account',
-        help = 'Wild Apricot account ID',
+        help = 'Wild Apricot account ID. Optional as it can be automatically detected based on your API key.',
         metavar = '<id>',
         type = int)
 parser.add_argument(
@@ -29,3 +29,4 @@ parser.add_argument(
         required = True)
 
 args = parser.parse_args()
+key = args.key.read()

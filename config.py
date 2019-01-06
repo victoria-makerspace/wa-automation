@@ -8,7 +8,6 @@ account = None
 api_host = 'https://api.wildapricot.org'
 archive_threshold = timedelta(60)
 auth_endpoint = 'https://oauth.wildapricot.org/auth/token'
-secret = None
 
 # Read configuration file
 config = ConfigParser()
@@ -29,7 +28,3 @@ if 'archive-threshold' in options:
     archive_threshold = timedelta(options['archive-threshold'])
 if 'auth' in server:
     auth_endpoint = server['auth']
-if 'secret' not in client:
-    sys.exit('Error: must provide a client secret')
-
-secret = client['secret']
