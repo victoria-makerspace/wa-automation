@@ -4,27 +4,33 @@ from datetime import timedelta
 import sys
 
 # Defaults
-account = None
-api_host = 'https://api.wildapricot.org'
-archive_threshold = timedelta(60)
-auth_endpoint = 'https://oauth.wildapricot.org/auth/token'
+config = {
+        'account': None,
+        'api_host': 'https://api.wildapricot.org',
+        'archive-levels': [],
+        'archive-threshold': timedelta(60),
+        'auth_endpoint': 'https://oauth.wildapricot.org/auth/token'}
 
 # Read configuration file
-config = ConfigParser()
-if args.config:
-    config.read(args.config)
-client = config['client'] if 'client' in config else {}
-server = config['server'] if 'server' in config else {}
-options = config['options'] if 'options' in config else {}
+parser = ConfigParser()
+
+if args.config_file:
+    parser.read(args.config_file)
+
+client = parser['client'] if 'client' in parser else {}
+server = parser['server'] if 'server' in parser else {}
+archive = parser['archive'] if 'archive' in parser else {}
 
 # Configuration variable declarations
 if args.account:
-    account = args.account
+    config['account'] = args.account
 elif 'account-id' in client:
-    account = client['account-id']
+    config['account'] = client['account-id']
 if 'api' in server:
-    api_host = server['api']
-if 'archive-threshold' in options:
-    archive_threshold = timedelta(options['archive-threshold'])
+    config['api_host'] = server['api']
+if 'levels' in archive:
+    config['archive-levels'] = [level.strip() for level in archive['levels'].split(',')]
+if 'threshold' in archive:
+    config['archive-threshold'] = timedelta(archive['threshold'])
 if 'auth' in server:
-    auth_endpoint = server['auth']
+    config['auth_endpoint'] = server['auth']

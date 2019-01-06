@@ -2,7 +2,6 @@
 
 from archive import archive
 from args import args
-import config
 from contacts import Contacts
 from datetime import datetime, timezone
 from describe import describe

@@ -17,6 +17,7 @@ parser.add_argument(
 parser.add_argument(
         '-c',
         '--config',
+        dest = 'config_file',
         help = 'Path to configuration file',
         metavar = '<file>')
 parser.add_argument(

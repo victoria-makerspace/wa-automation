@@ -6,7 +6,16 @@ class Contact:
         self.response = response
 
     def __str__(self):
-        return f'{self.name} <{self.email}> #{self.ID}'
+        email = f'<{self.email}>'
+        desc = f'{self.name:20} {email:30} ID#{self.ID:<10}'
+
+        if self.level:
+            desc += f' {self.level:15}'
+
+        if self.archived:
+            desc += ' ARCHIVED'
+
+        return desc
 
     def __field(self, name):
         for field in self.response['FieldValues']:

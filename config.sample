@@ -7,7 +7,9 @@ version = v2.1
 # The organization account ID, which can be found via the `/accounts` endpoint.
 account-id = 
 
-[options]
+[archive]
+# Comma-delimited list of member levels to auto-archive alongside non-members.
+levels =
 # Number of days without a login after which non-members get automatically
 # archived.
-archive-threshold = 60
+threshold = 60

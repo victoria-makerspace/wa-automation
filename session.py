@@ -1,5 +1,5 @@
 import args
-import config
+from config import config
 from time import sleep, time
 
 class Session:
@@ -12,11 +12,11 @@ class Session:
         client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
         self.oauth2_session = self.OAuth2Session(client = client)
         token = self.oauth2_session.fetch_token(
-                config.auth_endpoint,
+                config['auth_endpoint'],
                 client_id = self.CLIENT_ID,
                 client_secret = args.key,
                 scope = 'auto')
-        self.account = int(config.account or token['Permissions'][0]['AccountId'])
+        self.account = int(config['account'] or token['Permissions'][0]['AccountId'])
         self.last_request = 0
 
     # request synchronously communicates with the Wild Apricot API
@@ -30,7 +30,7 @@ class Session:
         self.last_request = time()
         response = self.oauth2_session.request(
                 verb,
-                config.api_host + endpoint,
+                config['api_host'] + endpoint,
                 params = params,
                 json = data)
 
