@@ -7,7 +7,7 @@ class Contact:
 
     def __str__(self):
         email = f'<{self.email}>'
-        desc = f'{self.name:20} {email:30} ID#{self.ID:<10}'
+        desc = f'{self.name:20} {email:30} ID# {self.ID:8}'
 
         if self.level:
             desc += f' {self.level:15}'

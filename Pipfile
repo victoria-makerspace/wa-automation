@@ -8,6 +8,7 @@ oauthlib = "*"
 requests-oauthlib = "*"
 python-dateutil = "*"
 tzlocal = "*"
+pydiscourse = "*"
 
 [dev-packages]
 

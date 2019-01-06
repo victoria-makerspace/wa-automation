@@ -12,7 +12,7 @@ class Session:
         client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
         self.oauth2_session = self.OAuth2Session(client = client)
         token = self.oauth2_session.fetch_token(
-                config['auth_endpoint'],
+                config['auth-endpoint'],
                 client_id = self.CLIENT_ID,
                 client_secret = args.key,
                 scope = 'auto')
@@ -31,7 +31,7 @@ class Session:
         self.last_request = time()
         response = self.oauth2_session.request(
                 verb,
-                config['api_host'] + endpoint,
+                config['api-host'] + endpoint,
                 params = params,
                 json = data)
 
