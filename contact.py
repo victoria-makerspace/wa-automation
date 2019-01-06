@@ -31,7 +31,7 @@ class Contact:
         phone = self.field('Phone')
         if phone: f['Phone'] = phone
         f['Last login'] = self.last_login if self.last_login else 'Never'
-        f['Last updated'] = self.last_updated
+        f['Last updated'] = self.last_updated if self.last_updated else 'Never'
         member_since = self.field('Member since')
         if member_since: f['Member since'] = member_since
         f['Created'] = self.field('Creation date')
@@ -103,6 +103,9 @@ class Contact:
 
     @property
     def last_updated(self):
+        if 'ProfileLastUpdated' not in self.response:
+            return None
+
         return parse(self.response['ProfileLastUpdated'])
 
     @property
