@@ -5,10 +5,10 @@ import sys
 from time import sleep, time
 
 class Discourse:
-    def __init__(self, host, username, api_key, wild_apricot_contacts):
-        self.host = host
-        self.username = username
-        self.api_key = api_key
+    def __init__(self, wild_apricot_contacts):
+        self.host = config['discourse']['host']
+        self.username = config['discourse']['username']
+        self.api_key = config['discourse']['api-key']
         self.users = {}
         self.wa_contacts = wild_apricot_contacts
         self.rate_limit = 0.1
@@ -44,11 +44,14 @@ class Discourse:
                 json = data)
 
         if not response.ok:
-            name = type(self).__name
+            name = type(self).__name__
 
-            if response.status_code is 429:
+            if response.status_code == 429:
                 self.rate_limit *= 2
-                print(f'DEBUG {name}: doubling rate limit to {self.rate_limit} seconds', file = sys.stderr)
+
+                if config['options']['debug']:
+                    print(f'DEBUG {name}: doubling rate limit to {self.rate_limit} seconds', file = sys.stderr)
+
                 sleep(30)
                 return self.request(verb, endpoint, params, data)
 
@@ -61,7 +64,7 @@ class Discourse:
         # users (the `/admin/users/list.json` endpoint is limited to 100, with
         # no capability of paging), we need this hacky method to retrieve the
         # list.
-        for _ in self.group_users('trust_level_0'): pass
+        self.group_user_ids('trust_level_0')
 
     def find(self, user_id):
         if user_id not in self.users:
@@ -86,7 +89,7 @@ class Discourse:
             if user['email'].lower() == email.lower():
                 return user
 
-        users = client.request('GET', '/admin/users/list.json', {
+        users = self.request('GET', '/admin/users/list.json', {
             'filter': email,
             'show_emails': 'true'})
 
@@ -105,32 +108,16 @@ class Discourse:
 
         return None
 
-    def group_users(self, group):
+    def group_user_ids(self, group):
         total = self.request(
                 'GET',
                 f'/groups/{group}/members.json',
                 {'limit': 0})['meta']['total']
-        members = self.request(
+        users = self.request(
                 'GET',
                 f'/groups/{group}/members.json',
                 {'limit': total})['members']
-
-        for member in members:
-            if member['id'] not in self.users:
-                self.users[member['id']] = {
-                        'id': member['id'],
-                        # Retrieving members by group won't return their e-mail
-                        # address, so we unfortunately need to make a separate
-                        # request _per_ user.
-                        'email': self.request('GET',
-                            # The `/admin/users/{id}.json` endpoint is not
-                            # consistent in returning an e-mail address for the
-                            # user, so we use this endpoint instead.
-                            f"/users/{member['username']}/emails.json")['email'],
-                        'name': member['name'],
-                        'username': member['username']}
-
-            yield self.users[member['id']]
+        return [user['id'] for user in users]
 
     def _pass_group_users(self, verb, group, user_ids):
         if len(user_ids) is 0:
@@ -163,7 +150,7 @@ class Discourse:
             if user is not None:
                 to_add.append(user['id'])
 
-        for user_id in self.group_users(group):
+        for user_id in self.group_user_ids(group):
             if user_id in to_add:
                 to_add.remove(user_id)
             else:
@@ -173,8 +160,27 @@ class Discourse:
         #self.remove_from_group(group, to_remove)
         return (to_add, to_remove)
 
-client = Discourse(
-        config['discourse']['host'],
-        config['discourse']['username'],
-        config['discourse']['api-key'],
-        Contacts())
+    def user_string(self, user_id):
+        user = self.find(user_id)
+        ID = user['id']
+        email = '<' + user['email'] + '>'
+        name = user['name']
+        return f'{ID:6} {email:30} {name}'
+
+def sync_group(client, args):
+    args = [arg.strip() for arg in ''.join(args).split(',')]
+    group = args[0]
+    transfer_group = args[1]
+    levels = args[2:]
+    changed = client.sync_group_to_levels(group, levels)
+    print(f'{len(changed[0])} users were added to @{group}:')
+
+    for user_id in changed[0]:
+        print(client.user_string(user_id))
+
+    print(f'{len(changed[1])} users were removed from @{group}, and added to @{transfer_group}:')
+
+    for user_id in changed[1]:
+        print(client.user_string(user_id))
+
+    #client.add_to_group(transfer_group, changed[1])
