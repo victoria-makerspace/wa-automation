@@ -173,14 +173,35 @@ def sync_group(client, args):
     transfer_group = args[1]
     levels = args[2:]
     changed = client.sync_group_to_levels(group, levels)
-    print(f'{len(changed[0])} users were added to @{group}:')
+    added = changed[0]
+    removed = changed[1]
+    transfer_group_contacts = client.group_user_ids(transfer_group)
+    to_add = []
+    to_remove = []
+    print(f'{len(added)} users were added to @{group}:')
 
-    for user_id in changed[0]:
+    for user_id in added:
         print(client.user_string(user_id))
 
-    print(f'{len(changed[1])} users were removed from @{group}, and added to @{transfer_group}:')
+        if user_id in transfer_group_contacts:
+            to_remove.append(user_id)
 
-    for user_id in changed[1]:
+    print(f'{len(removed)} users were removed from @{group}:')
+
+    for user_id in removed:
         print(client.user_string(user_id))
 
-    #client.add_to_group(transfer_group, changed[1])
+        if user_id not in transfer_group_contacts:
+            to_add.append(user_id)
+
+    print(f'{len(to_add)} users were added to @{transfer_group}:')
+    #client.add_to_group(transfer_group, to_add)
+
+    for user_id in to_add:
+        print(client.user_string(user_id))
+
+    print(f'{len(to_remove)} users were removed from @{transfer_group}:')
+    #client.remove_from_group(transfer_group, to_remove)
+
+    for user_id in to_remove:
+        print(client.user_string(user_id))
