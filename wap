@@ -11,9 +11,6 @@ from tzlocal import get_localzone
 now = datetime.now(timezone.utc)
 contacts = Contacts()
 
-if 1 < len(args.operations):
-    print(f'\n{now.astimezone(get_localzone()):%c}')
-
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
