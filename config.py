@@ -13,8 +13,10 @@ config = {
         'auth-endpoint': 'https://oauth.wildapricot.org/auth/token',
         'discourse': {
             'host': None,
-            'username': None,
-            'api-key': None}}
+            'username': 'system',
+            'api-key': None},
+        'options': {
+            'debug': False}}
 
 # Read configuration file
 parser = ConfigParser()
@@ -25,6 +27,7 @@ if args.config_file:
 archive = parser['archive'] if 'archive' in parser else {}
 client = parser['client'] if 'client' in parser else {}
 discourse = parser['discourse'] if 'discourse' in parser else {}
+options = parser['options'] if 'options' in parser else {}
 server = parser['server'] if 'server' in parser else {}
 
 # Configuration variable declarations
@@ -46,3 +49,5 @@ if 'username' in discourse:
     config['discourse']['username'] = discourse['username']
 if 'api-key' in discourse:
     config['discourse']['api-key'] = discourse['api-key']
+if 'debug' in options:
+    config['options']['debug'] = options['debug']

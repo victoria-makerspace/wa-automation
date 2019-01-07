@@ -7,14 +7,15 @@ class Contact:
 
     def __str__(self):
         email = f'<{self.email}>'
-        desc = f'{self.name:20} {email:30} ID# {self.ID:8}'
+        append = ''
 
         if self.level:
-            desc += f' {self.level:15}'
+            append += f' {self.level:15}'
 
         if self.archived:
-            desc += ' ARCHIVED'
+            append += ' ARCHIVED'
 
+        desc = f'{self.name:20} {email:30} ID# {self.ID:8}{append:>15}'
         return desc
 
     def __field(self, name):
