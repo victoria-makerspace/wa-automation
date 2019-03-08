@@ -83,6 +83,9 @@ class Contact:
         if self.archived == archived:
             return
 
+        # `__field()` returns a reference to the `FieldValues` field item in the
+        # `self.response` object. Assigning to its `Value` key will update the
+        # response object an therefore future calls to `field()`.
         data = {'FieldValues': [self.__field('Archived')]}
         data['FieldValues'][0]['Value'] = archived
         self.put(data)

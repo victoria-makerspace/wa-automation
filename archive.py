@@ -15,7 +15,7 @@ def archive(contacts, now):
         # Format list of membership levels as a comma-delineated string for
         # readability.
         level_msg = ', '.join([f'"{level}"' for level in config['archive']['levels']])
-        level_msg = f'and members in the {level_msg} levels '
+        level_msg = f'or members in the {level_msg} levels '
 
     archive_msg = f"Archiving non-members {level_msg}who have not logged in within {config['archive']['threshold'].days} days:"
 
