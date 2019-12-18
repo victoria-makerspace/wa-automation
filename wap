@@ -5,18 +5,20 @@ from args import args
 from contacts import Contacts
 from datetime import datetime, timezone
 from describe import describe
-from discourse import Discourse, sync_group
+from approve import autoApprove
+#from discourse import Discourse, sync_group
 import sys
 from tzlocal import get_localzone
 
 now = datetime.now(timezone.utc)
 contacts = Contacts()
-dc_client = Discourse(contacts)
+#dc_client = Discourse(contacts)
 
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
-        'discourse_sync': lambda x: sync_group(dc_client, x)}
+        'approve' : lambda x: autoApprove(contacts)}
+        # 'discourse_sync': lambda x: sync_group(dc_client, x)
 
 for op in args.operations:
     if op[0] not in operations:
