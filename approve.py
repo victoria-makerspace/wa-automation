@@ -22,13 +22,13 @@ from datetime import datetime, timezone
 
 def getSavedSearchList(session):
   savedSearchList = session.request('GET', 'savedsearches')
-  print(savedSearchList)
+  #print(savedSearchList)
   return savedSearchList
 
 
 def getSavedSearchIdByName(session, savedSearchList, targetName):
   for search in savedSearchList:
-    print(search)
+    #print(search)
     if search["Name"].lower() == targetName:
       return search["Id"]
   return None
@@ -41,12 +41,26 @@ def getSavedSearchIdByName(session, savedSearchList, targetName):
 #   #   if response != 200:
 #   #       do something with the response
 
+def approveMembership(session, contactId):
+  print(contactId)
+  temp = 'ApprovePendingMembership?contactId='+str(contactId)
+  print(temp)
+  response = session.RPCrequest('POST', temp)
+  print(response)
+
 def autoApprove(contacts):
   session = contacts.session
   savedSearchList = getSavedSearchList(session)
   searchId = getSavedSearchIdByName(session, savedSearchList, "list-of-members-to-approve")
-  print("search Results")
-  print(searchId)
-  temp = 'savedSearchList/'+str(searchId)
-  contactIdsToApprove = session.request('GET', 'savedSearchList')
-  print(contactIdsToApprove)
+  #print("search Results")
+  #print(searchId)
+  temp = 'savedsearches/'+str(searchId)
+  #print(temp)
+  searchResults = session.request('GET', temp)
+  contactIdsToApprove = searchResults["ContactIds"]
+  #print(contactIdsToApprove)
+  for contact in contactIdsToApprove:
+    approveMembership(session, contact)
+  
+
+

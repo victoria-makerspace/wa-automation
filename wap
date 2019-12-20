@@ -12,6 +12,7 @@ from tzlocal import get_localzone
 
 now = datetime.now(timezone.utc)
 contacts = Contacts()
+# create session object first then pass to contacts to be constructed using that session object then pass session object to later methods
 #dc_client = Discourse(contacts)
 
 operations = {
