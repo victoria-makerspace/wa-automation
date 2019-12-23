@@ -5,6 +5,12 @@ jobs:
       - image: python:alpine
     steps:
       - checkout
-      - run: |
-          pip3 install pipenv
-          pipenv sync
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install pipenv
+            pipenv sync --dev
+      - run:
+          name: Lint
+          command: |
+            pipenv run pylint wap *.py
