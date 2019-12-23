@@ -1,0 +1,10 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: python:alpine
+    steps:
+      - checkout
+      - run: |
+          pip3 install pipenv
+          pipenv sync
