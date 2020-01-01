@@ -29,5 +29,9 @@ parser.add_argument(
         nargs = '+',
         required = True)
 
+#TODO Add argument parsing for Discourse API
+
 args = parser.parse_args()
-key = args.key.read()
+
+if args.key is not None:
+    key = args.key.read()

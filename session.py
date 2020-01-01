@@ -14,7 +14,7 @@ class Session:
         token = self.oauth2_session.fetch_token(
                 config['auth-endpoint'],
                 client_id = self.CLIENT_ID,
-                client_secret = args.key,
+                client_secret = config['secret'],
                 scope = 'auto')
         self.account = int(config['account'] or token['Permissions'][0]['AccountId'])
 
