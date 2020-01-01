@@ -1,7 +1,7 @@
 import sys
 
 def describe(contacts, args):
-    if len(args) is not 1:
+    if len(args) != 1:
         print('Error: invalid number of arguments to `describe`: requires 1', file = sys.stderr)
         return
 
