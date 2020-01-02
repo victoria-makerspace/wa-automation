@@ -11,6 +11,8 @@ config = {
         'archive': {
             'levels': [],
             'threshold': timedelta(60)},
+        'auto-approve': {
+            'searchName': None},
         'auth-endpoint': 'https://oauth.wildapricot.org/auth/token',
         'discourse': {
             'host': None,
@@ -30,6 +32,7 @@ client = parser['client'] if 'client' in parser else {}
 discourse = parser['discourse'] if 'discourse' in parser else {}
 options = parser['options'] if 'options' in parser else {}
 server = parser['server'] if 'server' in parser else {}
+autoApprove = parser['auto-approve'] if 'auto-approve' in parser else {}
 
 # Configuration variable declarations
 if args.account:
@@ -50,6 +53,9 @@ if 'levels' in archive:
 
 if 'threshold' in archive:
     config['archive']['threshold'] = timedelta(int(archive['threshold']))
+
+if 'searchName' in autoApprove:
+    config['auto-approve']['searchName'] = autoApprove['searchName']
 
 if 'auth' in server:
     config['auth-endpoint'] = server['auth']

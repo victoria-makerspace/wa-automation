@@ -21,7 +21,7 @@ def approveMembership(session, contactId):
 def autoApprove(session):
   # Search for "list-of-members-to-approve" in the list of all saved searches
   savedSearchList = getSavedSearchList(session)
-  searchId = getSavedSearchIdByName(session, savedSearchList, "list-of-members-to-approve")
+  searchId = getSavedSearchIdByName(session, savedSearchList, config['auto-approve']['searchName'])
   
   # Creat a temporary string for search endpoint
   temp = 'savedsearches/'+str(searchId)
@@ -33,5 +33,3 @@ def autoApprove(session):
     for contact in contactIdsToApprove:
       approveMembership(session, contact)
   
-
-
