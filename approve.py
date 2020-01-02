@@ -6,8 +6,8 @@ def getSavedSearchList(session):
   savedSearchList = session.request('GET', 'savedsearches')
   return savedSearchList
 
+# return search id from given target name
 def getSavedSearchIdByName(session, savedSearchList, targetName):
-  # return search id from given target name
   for search in savedSearchList:
     if search["Name"].lower() == targetName:
       return search["Id"]
