@@ -7,6 +7,7 @@ import sys
 config = {
         'account': None,
         'api-host': 'https://api.wildapricot.org',
+        'secret': None,
         'archive': {
             'levels': [],
             'threshold': timedelta(60)},
@@ -35,19 +36,34 @@ if args.account:
     config['account'] = args.account
 elif 'account-id' in client:
     config['account'] = client['account-id']
+
+if args.key:
+    config['secret'] = args.key
+elif 'secret' in client:
+    config['secret'] = client['secret']
+
 if 'api' in server:
     config['api-host'] = server['api']
+
 if 'levels' in archive:
     config['archive']['levels'] = [level.strip() for level in archive['levels'].split(',')]
+
 if 'threshold' in archive:
     config['archive']['threshold'] = timedelta(int(archive['threshold']))
+
 if 'auth' in server:
     config['auth-endpoint'] = server['auth']
+
+## Discourse 
 if 'host' in discourse:
     config['discourse']['host'] = discourse['host']
+
 if 'username' in discourse:
     config['discourse']['username'] = discourse['username']
+
 if 'api-key' in discourse:
     config['discourse']['api-key'] = discourse['api-key']
+
 if 'debug' in options:
     config['options']['debug'] = options['debug']
+
