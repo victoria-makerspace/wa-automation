@@ -17,16 +17,17 @@ def approveMembership(session, contactId):
   temp = 'ApprovePendingMembership?contactId='+str(contactId)
   response = session.RPCrequest('POST', temp)
 
-def autoApprove(contacts):
-  session = contacts.session
+def autoApprove(session):
   savedSearchList = getSavedSearchList(session)
   searchId = getSavedSearchIdByName(session, savedSearchList, "list-of-members-to-approve")
+  
   temp = 'savedsearches/'+str(searchId)
   searchResults = session.request('GET', temp)
-  contactIdsToApprove = searchResults["ContactIds"]
-
-  for contact in contactIdsToApprove:
-    approveMembership(session, contact)
+  
+  if searchResults["ContactIds"]:
+    contactIdsToApprove = searchResults["ContactIds"]
+    for contact in contactIdsToApprove:
+      approveMembership(session, contact)
   
 
 

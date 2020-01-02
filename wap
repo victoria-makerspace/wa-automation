@@ -6,19 +6,20 @@ from contacts import Contacts
 from datetime import datetime, timezone
 from describe import describe
 from approve import autoApprove
+from session import Session
 #from discourse import Discourse, sync_group
 import sys
 from tzlocal import get_localzone
 
 now = datetime.now(timezone.utc)
-contacts = Contacts()
-# create session object first then pass to contacts to be constructed using that session object then pass session object to later methods
+session = Session()
+contacts = Contacts(session)
 #dc_client = Discourse(contacts)
 
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
-        'approve' : lambda x: autoApprove(contacts)}
+        'approve' : lambda x: autoApprove(session)}
         # 'discourse_sync': lambda x: sync_group(dc_client, x)
 
 for op in args.operations:
