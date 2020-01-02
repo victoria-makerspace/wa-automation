@@ -1,13 +1,10 @@
 from config import config
 from session import Session
 from datetime import datetime, timezone
-#import pdb 
-
 
 def getSavedSearchList(session):
   savedSearchList = session.request('GET', 'savedsearches')
   return savedSearchList
-
 
 def getSavedSearchIdByName(session, savedSearchList, targetName):
   for search in savedSearchList:
@@ -19,8 +16,6 @@ def approveMembership(session, contactId):
   print(contactId)
   temp = 'ApprovePendingMembership?contactId='+str(contactId)
   response = session.RPCrequest('POST', temp)
-  # FIX ME
-  # if response is not good do something useful with error
 
 def autoApprove(contacts):
   session = contacts.session
