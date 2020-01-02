@@ -6,6 +6,8 @@ version = v2.1
 [client]
 # The organization account ID, which can be found via the `/accounts` endpoint.
 account-id = 
+# API key configured at wildapricot.org/admin/settings/integration/authorized-applications/
+secret = 
 
 [archive]
 # Comma-delimited list of member levels to auto-archive alongside non-members.

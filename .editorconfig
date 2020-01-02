@@ -1,0 +1,12 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[{wap,*.py}]
+indent_size = 4

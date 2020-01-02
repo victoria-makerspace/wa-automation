@@ -1,0 +1,16 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: python:alpine
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install pipenv
+            pipenv sync --dev
+      - run:
+          name: Lint
+          command: |
+            pipenv run pylint wap *.py
