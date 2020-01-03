@@ -3,6 +3,7 @@
 from archive import archive
 from args import args
 from contacts import Contacts
+from cancel import autoCancel
 from datetime import datetime, timezone
 from describe import describe
 from discourse import Discourse, sync_group
@@ -16,6 +17,7 @@ dc_client = Discourse(contacts)
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
+        'cancel': lambda x: autoCancel(contacts),
         'discourse_sync': lambda x: sync_group(dc_client, x)}
 
 for op in args.operations:
