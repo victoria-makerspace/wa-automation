@@ -1,10 +1,50 @@
 
-RECIPIENT ARRAY
-will need Id of security's contact card in our data base
-and copy to system email
-SUBJECT
-subject of email (email filter will collect these in our WA account)
-  BODY
-  will want some sort of short preamble
-  list of members who's cards should be canceled
+
+
+{
+  "Subject": "string",
+  "Body": "string",
+  "Recipients": [
+    {
+      "Id": 0,
+      "Type": "IndividualRecipient",
+      "Name": "string",
+      "Email": "string"
+    }
+  ],
+  "EventId": 0
+}
+class Email:
+  def __init__(self, subject, body, recipients):
+    self.subject = subject
+    self.body = body
+    self.recipients = recipients
+    self.eventId = 0
+  
+@property
+def emailAddress(self):
+  for email in self.recipients['Email']:
+    emails = emails + ', ' + email
+  return emails
+
+@property
+def subject(self):
+  return self.subject
+
+@property
+def body(self):
+  return self.body
+
+@body.setter
+#setter to force all additions to email to be proceeded by a new line
+def body(self, toAppend):
+  self.body = self.body + '\n' + toAppend
+
+@property
+def eventId(self):
+  if eventId is not 0:
+    return self.eventId
+  else:
+    return "Email not associated with event"
+
 
