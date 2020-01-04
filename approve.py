@@ -12,7 +12,7 @@ def get_search_id(saved_search_list, target_name):
 
 
 def approve_membership(session, contact_id):
-    temp = 'ApprovePendingMembership?contactId='+str(contact_id)
+    temp = f'ApprovePendingMembership?contactId={contact_id}'
     session.request('POST', temp, rpc=True)
 
 
