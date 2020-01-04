@@ -9,5 +9,5 @@ dependency management.
 pipenv sync # Installs all depedencies.
 ```
 
-## TODO's
+## TODOs
 Change the way errors raised in process of running the script are handled. 
