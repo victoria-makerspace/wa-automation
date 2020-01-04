@@ -15,3 +15,7 @@ levels =
 # Number of days without a login after which non-members get automatically
 # archived.
 threshold = 60
+
+[auto-approve]
+# Name of saved search that returns members to be approved
+search_name = 
