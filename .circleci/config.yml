@@ -14,3 +14,7 @@ jobs:
           name: Lint
           command: |
             pipenv run pylint wap *.py
+      - run:
+          name: Test
+          command: |
+            pipenv run pytest

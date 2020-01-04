@@ -1,2 +1,3 @@
 # Main project configuration file.
 /config
+__pycache__
