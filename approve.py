@@ -1,9 +1,4 @@
 from config import config
-
-
-def get_saved_search_list(session):
-    return session.request('GET', 'savedsearches')
-
 # return search id from given target name
 
 
@@ -23,7 +18,7 @@ def approve_membership(session, contact_id):
 
 def auto_approve(session):
     # Search for "list-of-members-to-approve" in the list of all saved searches
-    saved_search_list = get_saved_search_list(session)
+    saved_search_list = session.request('GET', 'savedsearches')
     search_id = get_search_id(
         saved_search_list, config['auto-approve']['searchName'])
 
