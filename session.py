@@ -20,7 +20,7 @@ class Session:
 
     # request synchronously communicates with the Wild Apricot API
     def request(self, verb, endpoint, params = {}, data = {}, rpc = False):
-        path_prefix = "accounts" if not rpc else "rpc"
+        path_prefix = 'accounts' if not rpc else 'rpc'
         endpoint = f'/v2.1/{path_prefix}/{self.account}/{endpoint}'
         params['$async'] = False
 

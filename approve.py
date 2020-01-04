@@ -13,7 +13,7 @@ def get_search_id(saved_search_list, target_name):
 
 def approve_membership(session, contact_id):
     temp = 'ApprovePendingMembership?contactId='+str(contact_id)
-    session.request('POST', temp, rpc = True)
+    session.request('POST', temp, rpc=True)
 
 
 def auto_approve(session):
@@ -27,7 +27,7 @@ def auto_approve(session):
     search_results = session.request('GET', temp)
 
     # for each contact returned within saved search call the approve method
-    if search_results["ContactIds"]:
-        contact_ids_to_approve = search_results["ContactIds"]
+    if search_results['ContactIds']:
+        contact_ids_to_approve = search_results['ContactIds']
         for contact in contact_ids_to_approve:
             approve_membership(session, contact)
