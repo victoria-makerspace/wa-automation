@@ -20,7 +20,7 @@ def auto_approve(session):
     # Search for "list-of-members-to-approve" in the list of all saved searches
     saved_search_list = session.request('GET', 'savedsearches')
     search_id = get_search_id(
-        saved_search_list, config['auto-approve']['searchName'])
+        saved_search_list, config['auto-approve']['search_name'])
 
     # Creat a temporary string for search endpoint
     temp = 'savedsearches/'+str(search_id)

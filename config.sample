@@ -18,4 +18,4 @@ threshold = 60
 
 [auto-approve]
 # Name of saved search that returns members to be approved
-searchName = 
+search_name = 

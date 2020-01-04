@@ -11,7 +11,7 @@ config = {
             'levels': [],
             'threshold': timedelta(60)},
         'auto-approve': {
-            'searchName': None},
+            'search_name': None},
         'auth-endpoint': 'https://oauth.wildapricot.org/auth/token',
         'discourse': {
             'host': None,
@@ -53,8 +53,8 @@ if 'levels' in archive:
 if 'threshold' in archive:
     config['archive']['threshold'] = timedelta(int(archive['threshold']))
 
-if 'searchName' in auto_approve:
-    config['auto-approve']['searchName'] = auto_approve['searchName']
+if 'search_name' in auto_approve:
+    config['auto-approve']['search_name'] = auto_approve['search_name']
 
 if 'auth' in server:
     config['auth-endpoint'] = server['auth']
