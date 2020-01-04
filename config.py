@@ -1,7 +1,6 @@
-from args import args
 from configparser import ConfigParser
 from datetime import timedelta
-import sys
+from args import args
 
 # Defaults
 config = {
@@ -32,7 +31,7 @@ client = parser['client'] if 'client' in parser else {}
 discourse = parser['discourse'] if 'discourse' in parser else {}
 options = parser['options'] if 'options' in parser else {}
 server = parser['server'] if 'server' in parser else {}
-autoApprove = parser['auto-approve'] if 'auto-approve' in parser else {}
+auto_approve = parser['auto-approve'] if 'auto-approve' in parser else {}
 
 # Configuration variable declarations
 if args.account:
@@ -54,8 +53,8 @@ if 'levels' in archive:
 if 'threshold' in archive:
     config['archive']['threshold'] = timedelta(int(archive['threshold']))
 
-if 'searchName' in autoApprove:
-    config['auto-approve']['searchName'] = autoApprove['searchName']
+if 'searchName' in auto_approve:
+    config['auto-approve']['searchName'] = auto_approve['searchName']
 
 if 'auth' in server:
     config['auth-endpoint'] = server['auth']

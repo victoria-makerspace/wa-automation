@@ -1,6 +1,6 @@
-import args
-from config import config
 from time import sleep, time
+from config import config
+
 
 class Session:
     from oauthlib.oauth2 import BackendApplicationClient
@@ -12,10 +12,10 @@ class Session:
         client = self.BackendApplicationClient(client_id = self.CLIENT_ID)
         self.oauth2_session = self.OAuth2Session(client = client)
         token = self.oauth2_session.fetch_token(
-                config['auth-endpoint'],
-                client_id = self.CLIENT_ID,
-                client_secret = config['secret'],
-                scope = 'auto')
+            config['auth-endpoint'],
+            client_id = self.CLIENT_ID,
+            client_secret = config['secret'],
+            scope = 'auto')
         self.account = int(config['account'] or token['Permissions'][0]['AccountId'])
 
     # request synchronously communicates with the Wild Apricot API
@@ -30,17 +30,17 @@ class Session:
 
         self.last_request = time()
         response = self.oauth2_session.request(
-                verb,
-                config['api-host'] + endpoint,
-                params = params,
-                json = data)
+            verb,
+            config['api-host'] + endpoint,
+            params = params,
+            json = data)
 
         if not response.ok:
             raise Exception(f'{response.status_code}: {response.reason}')
 
         return response.json()
 
-    def RPCrequest(self, verb, endpoint, params = {}, data = {}):
+    def rpc_request(self, verb, endpoint, params = {}, data = {}):
         endpoint = f'/v2.1/rpc/{self.account}/{endpoint}'
         params['$async'] = False
 
@@ -51,10 +51,10 @@ class Session:
 
         self.last_request = time()
         response = self.oauth2_session.request(
-                verb,
-                config['api-host'] + endpoint,
-                params = params,
-                json = data)
+            verb,
+            config['api-host'] + endpoint,
+            params = params,
+            json = data)
 
         if not response.ok:
             raise Exception(f'{response.status_code}: {response.reason}')
