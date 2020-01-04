@@ -19,29 +19,9 @@ class Session:
         self.account = int(config['account'] or token['Permissions'][0]['AccountId'])
 
     # request synchronously communicates with the Wild Apricot API
-    def request(self, verb, endpoint, params = {}, data = {}):
-        endpoint = f'/v2.1/accounts/{self.account}/{endpoint}'
-        params['$async'] = False
-
-        # Rate-limiting because Wild Apricot limits API requests to 60 per
-        # minute.
-        if hasattr(self, 'last_request') and time() < self.last_request + 1:
-            sleep(1)
-
-        self.last_request = time()
-        response = self.oauth2_session.request(
-            verb,
-            config['api-host'] + endpoint,
-            params = params,
-            json = data)
-
-        if not response.ok:
-            raise Exception(f'{response.status_code}: {response.reason}')
-
-        return response.json()
-
-    def rpc_request(self, verb, endpoint, params = {}, data = {}):
-        endpoint = f'/v2.1/rpc/{self.account}/{endpoint}'
+    def request(self, verb, endpoint, params = {}, data = {}, rpc = False):
+        path_prefix = "accounts" if not rpc else "rpc"
+        endpoint = f'/v2.1/{path_prefix}/{self.account}/{endpoint}'
         params['$async'] = False
 
         # Rate-limiting because Wild Apricot limits API requests to 60 per
