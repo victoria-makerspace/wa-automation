@@ -10,4 +10,4 @@ pipenv sync # Installs all depedencies.
 ```
 
 ## TODOs
-Change the way errors raised in process of running the script are handled. 
+* Change the way errors raised in process of running the script are handled.
