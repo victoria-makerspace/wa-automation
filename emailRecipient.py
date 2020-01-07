@@ -11,3 +11,5 @@ class EmailRecipient:
         # name of recipient or name of saved search.
         self.name = name
         self.email = email_address
+
+
