@@ -13,6 +13,11 @@ config = {
         'auto-approve': {
             'search_name': None},
         'auth-endpoint': 'https://oauth.wildapricot.org/auth/token',
+        'cancel': {
+            'id': None, 
+            'type': None,
+            'name': None,
+            'email_address': None},
         'discourse': {
             'host': None,
             'username': 'system',
@@ -32,6 +37,7 @@ discourse = parser['discourse'] if 'discourse' in parser else {}
 options = parser['options'] if 'options' in parser else {}
 server = parser['server'] if 'server' in parser else {}
 auto_approve = parser['auto-approve'] if 'auto-approve' in parser else {}
+cancel = parser['cancel'] if 'cancel' in parser else {}
 
 # Configuration variable declarations
 if args.account:
@@ -58,6 +64,9 @@ if 'search_name' in auto_approve:
 
 if 'auth' in server:
     config['auth-endpoint'] = server['auth']
+
+if 'id' in cancel:
+    config['cancel']['id'] = cancel['id']
 
 ## Discourse 
 if 'host' in discourse:
