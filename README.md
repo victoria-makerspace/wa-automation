@@ -13,6 +13,22 @@ pipenv shell      # Open a shell within the virtual environment containing the
 pylint wap *.py   # Run the linter against all Python files.
 pytest            # Run all unit tests.
 ```
+### powershell
+```sh
+pipenv run python wap <args> <config file> -o <operation>
+```
+#### example
+```sh
+pipenv run python wap -c config -o cancel
+```
+### POSIX
+```sh
+pipenv run ./wap <args> <config file> -o <operation>
+```
+#### example
+```sh
+pipenv run ./wap -c config -o cancel
+```
 
 ## TODOs
 
