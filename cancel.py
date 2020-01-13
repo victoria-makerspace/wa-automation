@@ -1,45 +1,38 @@
 from config import config
 from contacts import Contacts
-from emailRecipient import *
-from email2 import Email2
+from datetime import datetime
+from email_recipient import *
+from electronic_mail import electronic_mail
 from session import Session
+import pdb 
 import json
-#from emailRecipient import convert_to_dic
+
 
 
 def autoCancel(contacts):
-  f= open("..\CancelTheseCards.txt", "a+")
-  session = contacts.session
-  
-  for contact in contacts.getlevel("Cancel My Membership"):
-    # contact.archived = True
     
-    f.write(contact.name)
+    # Build a set of members names found in the Cancel my Membership
+    # membership level
+    cancel_set = {""}
+    for contact in contacts.getlevel("Cancel My Membership"):
+        # contact.archived = True
+        cancel_set.add(contact.name)
 
-    recipient = EmailRecipient(53173355, 'Kyle Bisley', 'grants@makerspace.ca', 'IndividualRecipient')
+    # concatenates the list of members to cancel to the draft from file
+    seperator = '\n'
+    temp = seperator.join(cancel_set)
+    with open('./emails/cancel.txt', 'r') as f:
+        email_body = f.read()
+    email_body += temp
 
-    j_recipient = json.dumps(recipient, default=convert_to_dic)
+    # constructs email_recipient object for mail to security
+    security = contacts.get(int(config['cancel']['id']))
+    # pdb.set_trace()
+    recipient = email_recipient(config['cancel']['id'], security, 0)
 
-    mail = Email2('test subject', 'test body', j_recipient)
-
-    j_mail = json.dumps(mail, default=convert_to_dic)
-    temp = session.request('email', 'sendemail', rpc=True, data=j_mail)
-    print('Response')
-    print(temp)
+    # constructs electronic_mail object and converts object to json
+    mail = electronic_mail('Acces cards to deactivate: ', email_body, [recipient])
+    j_mail = json.dumps(mail, default=electronic_mail.convert_to_dic)
     
-  f.close()
-    
-def convert_to_dic(self):
-#   A function takes in a custom object and returns a dictionary representation of the object.
-#   This dict representation includes meta data such as the object's module and class names.
-  
-  #  Populate the dictionary with object meta data 
-    obj_dict = {
-        "__class__": self.__class__.__name__,
-        "__module__": self.__module__
-    }
-  
-  #  Populate the dictionary with object properties
-    obj_dict.update(self.__dict__)
-  
-    return obj_dict
+    # API call to send email
+    contacts.session.request('POST', 'email/SendEmail', rpc=True, data=json.loads(j_mail))
