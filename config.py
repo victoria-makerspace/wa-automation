@@ -14,10 +14,7 @@ config = {
             'search_name': None},
         'auth-endpoint': 'https://oauth.wildapricot.org/auth/token',
         'cancel': {
-            'id': None, 
-            'type': None,
-            'name': None,
-            'email_address': None},
+            'id': None},
         'discourse': {
             'host': None,
             'username': 'system',

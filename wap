@@ -15,14 +15,14 @@ from tzlocal import get_localzone
 now = datetime.now(timezone.utc)
 session = Session()
 contacts = Contacts(session)
-#dc_client = Discourse(contacts)
+dc_client = Discourse(contacts)
 
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
         'cancel': lambda x: auto_cancel(contacts),
-        'approve' : lambda x: auto_approve(session)}
-        #'discourse_sync': lambda x: sync_group(dc_client, x)}
+        'approve' : lambda x: auto_approve(session),
+        'discourse_sync': lambda x: sync_group(dc_client, x)}
 
 for op in args.operations:
     if op[0] not in operations:
