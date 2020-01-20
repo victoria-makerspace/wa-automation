@@ -17,7 +17,7 @@ def auto_cancel(contacts):
     temp = seperator.join(cancel_set)
     with open('./emails/cancel.txt', 'r') as draft:
         email_body = draft.read()
-    email_body = email_body + '<br>' + temp
+    email_body = f'{email_body} <br> {temp}'
 
     # constructs email_recipient object for mail to security
     security = contacts.get(int(config['cancel']['id']))

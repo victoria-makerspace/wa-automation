@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from describe import describe
 from approve import auto_approve
 from session import Session
-#from discourse import Discourse, sync_group
+from discourse import Discourse, sync_group
+
 import sys
 from tzlocal import get_localzone
 
