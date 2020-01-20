@@ -1,4 +1,5 @@
 from time import sleep, time
+import json
 from config import config
 
 
@@ -28,14 +29,14 @@ class Session:
         # minute.
         if hasattr(self, 'last_request') and time() < self.last_request + 1:
             sleep(1)
-
+        
         self.last_request = time()
         response = self.oauth2_session.request(
             verb,
             config['api-host'] + endpoint,
             params = params,
             json = data)
-
+        
         if not response.ok:
             raise Exception(f'{response.status_code}: {response.reason}')
 
