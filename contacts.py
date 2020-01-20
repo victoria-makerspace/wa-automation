@@ -1,4 +1,5 @@
 from contact import Contact
+from pprint import pprint
 
 class Contacts:
     from session import Session
@@ -21,6 +22,16 @@ class Contacts:
                 return contact
 
         return None
+    
+    def balance_due(self):
+        balance_due_ids = []
+        for contact in self.list.values():
+            if contact.field('Balance') != 0:
+                balance_due_ids.append(contact.field('User ID'))
+        if balance_due_ids:
+            return balance_due_ids
+        else:
+            return None
 
     def getlevel(self, *levels):
         contacts = {}

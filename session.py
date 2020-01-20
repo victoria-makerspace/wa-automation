@@ -24,6 +24,7 @@ class Session:
         endpoint = f'/v2.1/{path_prefix}/{self.account}/{endpoint}'
         params['$async'] = False
 
+        print(endpoint)
         # Rate-limiting because Wild Apricot limits API requests to 60 per
         # minute.
         if hasattr(self, 'last_request') and time() < self.last_request + 1:
