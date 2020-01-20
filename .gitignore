@@ -1,3 +1,4 @@
 # Main project configuration file.
 /config
 __pycache__
+emails/
