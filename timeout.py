@@ -9,6 +9,16 @@ from datetime import datetime
 from approve import approve_membership
 import json
 
+def send_timeout_mail(session, contact, id):
+    with open('./emails/timeout.txt', 'r') as draft:
+        email_body = draft.read()
+    email_body.format(contact.name)
+    recipient = email_recipient(id, contact, 0)
+            
+    mail = electronic_mail('Membership invoice timed out', email_body, [recipient])
+    j_mail = json.dumps(mail, default = electronic_mail.convert_to_dic)
+            
+    session.request('POST', 'email/SendEmail', rpc=True, data=json.loads(j_mail))           
 
 def timeout(session, contacts, now):
     
@@ -23,16 +33,8 @@ def timeout(session, contacts, now):
                 (invoice['Invoices'][0]['OrderType']=='MembershipApplication')):
             # email timeout draft
             contact = contacts.get(id)
-            
-            with open('./emails/timeout.txt', 'r') as draft:
-                email_body = draft.read()
-            email_body.format(contact.name)
-            recipient = email_recipient(id, contact, 0)
-            
-            mail = electronic_mail('Membership invoice timed out', email_body, [recipient])
-            j_mail = json.dumps(mail, default=electronic_mail.convert_to_dic)
-            
-            session.request('POST', 'email/SendEmail', rpc=True, data=json.loads(j_mail))
+            send_timeout_mail(session, contact, id)
+
             # void the invoice
       
             invoice_id = int(invoice['Invoices'][0]['Id'])
