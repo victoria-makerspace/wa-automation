@@ -18,7 +18,12 @@ def send_timeout_mail(session, contact, id):
     mail = electronic_mail('Membership invoice timed out', email_body, [recipient])
     j_mail = json.dumps(mail, default = electronic_mail.convert_to_dic)
             
-    session.request('POST', 'email/SendEmail', rpc=True, data=json.loads(j_mail))           
+    session.request('POST', 'email/SendEmail', rpc=True, data=json.loads(j_mail))
+
+def void_invoice(session, invoice):
+    invoice_id = int(invoice['Invoices'][0]['Id'])
+    temp = f'VoidInvoice?invoiceId={invoice_id}'
+    invoice = session.request('POST', temp, rpc=True)
 
 def timeout(session, contacts, now):
     
@@ -34,12 +39,10 @@ def timeout(session, contacts, now):
             # email timeout draft
             contact = contacts.get(id)
             send_timeout_mail(session, contact, id)
-
+            
             # void the invoice
-      
-            invoice_id = int(invoice['Invoices'][0]['Id'])
-            temp = f'VoidInvoice?invoiceId={invoice_id}'
-            invoice = session.request('POST', temp, rpc=True)
+            void_invoice(session, invoice)
+
 
             # # cancel their application
             temp= f'RejectPendingMembership?contactId={id}'
