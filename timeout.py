@@ -57,6 +57,10 @@ def timeout(session, contacts, now):
             send_timeout_mail(session, contact, contact_id)
             void_invoice(session, invoice)
             cancel_application(session, contact_id)
+<<<<<<< HEAD
             assign_new_applicant(session, contact_id)
+=======
+            assig_new_applicant(session, contact_id)
+>>>>>>> 7a3e613707754b1234a8af20c3291deabab0b02d
             approve_membership(session, contact_id)
             contact.archived = True
