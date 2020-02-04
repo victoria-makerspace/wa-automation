@@ -3,11 +3,14 @@
 from archive import archive
 from args import args
 from contacts import Contacts
+from timeout import timeout
+from cancel import auto_cancel
 from datetime import datetime, timezone
 from describe import describe
 from approve import auto_approve
 from session import Session
 from discourse import Discourse, sync_group
+
 import sys
 from tzlocal import get_localzone
 
@@ -19,7 +22,9 @@ dc_client = Discourse(contacts)
 operations = {
         'archive': lambda x: archive(contacts, now),
         'describe': lambda x: describe(contacts, x),
+        'cancel': lambda x: auto_cancel(contacts),
         'approve' : lambda x: auto_approve(session),
+        'timeout' : lambda x: timeout(session, contacts, now),
         'discourse_sync': lambda x: sync_group(dc_client, x)}
 
 for op in args.operations:
